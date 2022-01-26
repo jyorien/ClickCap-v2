@@ -1,5 +1,8 @@
 package com.example.clickcapv2.adapters
 
+import android.annotation.SuppressLint
+import android.bluetooth.BluetoothDevice
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +11,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clickcapv2.R
-import com.example.clickcapv2.data.BTDevice
 
-class DeviceAdapter : ListAdapter<BTDevice, DeviceViewHolder>(DeviceComparator()) {
+class DeviceAdapter : ListAdapter<BluetoothDevice, DeviceViewHolder>(DeviceComparator()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeviceViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.device_list_item, parent, false)
@@ -24,18 +26,19 @@ class DeviceAdapter : ListAdapter<BTDevice, DeviceViewHolder>(DeviceComparator()
 
 class DeviceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val name: TextView = itemView.findViewById(R.id.deviceName)
-    fun bind(device: BTDevice) {
-        name.text = device.deviceName
+    @SuppressLint("MissingPermission")
+    fun bind(device: BluetoothDevice) {
+        name.text = device.name.toString()
     }
 }
 
-class DeviceComparator : DiffUtil.ItemCallback<BTDevice>() {
-    override fun areItemsTheSame(oldItem: BTDevice, newItem: BTDevice): Boolean {
+class DeviceComparator : DiffUtil.ItemCallback<BluetoothDevice>() {
+    override fun areItemsTheSame(oldItem: BluetoothDevice, newItem: BluetoothDevice): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: BTDevice, newItem: BTDevice): Boolean {
-        return oldItem.deviceMAC == newItem.deviceMAC
+    override fun areContentsTheSame(oldItem: BluetoothDevice, newItem: BluetoothDevice): Boolean {
+        return oldItem.address == newItem.address
     }
 
 }
