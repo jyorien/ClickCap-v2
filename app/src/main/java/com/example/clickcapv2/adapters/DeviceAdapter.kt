@@ -29,14 +29,17 @@ class DeviceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val bondState: TextView = itemView.findViewById(R.id.deviceBondState)
     @SuppressLint("MissingPermission")
     fun bind(device: BluetoothDevice) {
-        name.text = device.name.toString()
-        var bondStateText = ""
-        when (device.bondState) {
-            BluetoothDevice.BOND_BONDED -> {bondStateText = "Bonded" }
-            BluetoothDevice.BOND_BONDING -> {bondStateText = "Bonding" }
-            BluetoothDevice.BOND_NONE -> {bondStateText = "Not bonded" }
+        device.name?.let {
+            name.text = it
+            var bondStateText = ""
+            when (device.bondState) {
+                BluetoothDevice.BOND_BONDED -> {bondStateText = "Bonded" }
+                BluetoothDevice.BOND_BONDING -> {bondStateText = "Bonding" }
+                BluetoothDevice.BOND_NONE -> {bondStateText = "Not bonded" }
+            }
+            bondState.text = bondStateText
         }
-        bondState.text = bondStateText
+
     }
 }
 

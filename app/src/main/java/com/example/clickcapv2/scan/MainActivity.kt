@@ -104,12 +104,13 @@ class MainActivity : AppCompatActivity() {
                     Log.d("hello","action found")
                     val device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
                     Log.d("hello", device?.name.toString())
-                    if (!deviceList.contains(device)) {
-                        device?.let {
+                    if (!deviceList.contains(device) && device?.name != null) {
+                        device.let {
                             deviceList.add(it)
+                            val newList = mutableListOf<BluetoothDevice>()
+                            newList.addAll(deviceList)
                             Log.d("hello","new list $deviceList")
-                            (binding.deviceRecyclerView.adapter as DeviceAdapter).submitList(deviceList)
-
+                            (binding.deviceRecyclerView.adapter as DeviceAdapter).submitList(newList)
                         }
                     }
                 }
